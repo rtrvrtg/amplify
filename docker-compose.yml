@@ -15,12 +15,14 @@ services:
     volumes:
       - ./:/data
 
-  # ruby-puma:
-  #   build: ./docker/compose/ruby-puma
-  #   network_mode: service:nginx
-  #   volumes:
-  #     - ./:/data
-  #   environment: {}
+  ruby-puma:
+    build:
+      context: .
+      dockerfile: ./docker/compose/ruby-puma/Dockerfile
+    network_mode: service:nginx
+    volumes:
+      - ./:/data
+    environment: {}
 
   # CLI
 
