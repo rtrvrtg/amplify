@@ -28,6 +28,7 @@ RUN chmod -R ug+rw /data
 
 USER amplify
 WORKDIR /data
+RUN echo "source /etc/profile.d/rvm.sh" >> $HOME/.bash_profile
 RUN bash -l -c ". /etc/profile.d/rvm.sh && rvm use ${RUBY_VERSION}"
 COPY . .
 COPY docker/compose/ruby-puma/application.yml config/application.yml
@@ -39,7 +40,8 @@ RUN chown -R amplify /data
 RUN chmod -R ug+rw /data
 
 USER amplify
-RUN bash -l -c ". /etc/profile.d/rvm.sh && ls -al /data/tmp && bundle exec rake assets:precompile"
+RUN bash -l -c ". /etc/profile.d/rvm.sh && bundle exec rake assets:precompile"
 # "rvm", "2.5.3", "do", 
-CMD ["source", "/etc/profile.d/rvm.sh", "&&", "rvm", "do", "bundle", "exec", "puma", "-C", "config/puma.rb"]
+# "source", "/etc/profile.d/rvm.sh", "&&", 
+CMD ["rvm", "do", "bundle", "exec", "puma", "-C", "config/puma.rb"]
 # --daemon amplify
