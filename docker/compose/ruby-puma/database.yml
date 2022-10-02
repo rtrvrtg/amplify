@@ -1,5 +1,5 @@
 development:
-  host: postgresql
+  host: host.docker.internal
   adapter: postgresql
   encoding: unicode
   username: postgresql

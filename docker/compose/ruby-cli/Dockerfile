@@ -23,7 +23,6 @@ RUN adduser --disabled-password -u 1000 amplify
 USER amplify
 RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-RUN echo 'export RUBY_VERSION="$RUBY_VERSION"' >> ~/.bashrc
 RUN echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 ENV PATH "$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
 RUN export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
@@ -51,7 +50,9 @@ RUN $HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle install
 
 # Setup app
 COPY --chown=amplify:root . .
-COPY --chown=amplify:root ./docker/compose/ruby-puma/*.yml /data/config/
+COPY --chown=amplify:root ./docker/compose/ruby-puma/application.yml /data/config/application.yml
+COPY --chown=amplify:root ./docker/compose/ruby-puma/database.yml /data/config/database.yml
+COPY --chown=amplify:root ./docker/compose/ruby-puma/secrets.yml /data/config/secrets.yml
 
 # Enforce ownership
 USER root
@@ -60,7 +61,8 @@ RUN chmod -R ug+rw /data
 
 # Precompile assets
 USER amplify
+CMD exec sh -c 'while true ;do wait ;done'
 # RUN $HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle exec $HOME/.rbenv/versions/$RUBY_VERSION/bin/rake assets:precompile
 
 # Run
-CMD ["$HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle", "exec", "$HOME/.rbenv/versions/$RUBY_VERSION/bin/puma", "-C", "config/puma.rb"]
+# CMD ["$HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle", "exec", "$HOME/.rbenv/versions/$RUBY_VERSION/bin/puma", "-C", "config/puma.rb"]
