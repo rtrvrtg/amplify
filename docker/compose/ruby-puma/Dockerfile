@@ -1,5 +1,6 @@
 FROM debian:bullseye
 
+ENV HOME /home/amplify
 ENV RUBY_VERSION 2.5.3
 ENV NODEJS_VERSION 16
 
@@ -57,10 +58,10 @@ COPY --chown=amplify:root ./docker/compose/ruby-puma/*.yml /data/config/
 USER root
 RUN chown -R amplify /data
 RUN chmod -R ug+rw /data
+RUN chmod +x docker/compose/ruby-puma/*.sh
 
 # Precompile assets
 USER amplify
-# RUN $HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle exec $HOME/.rbenv/versions/$RUBY_VERSION/bin/rake assets:precompile
 
 # Run
-CMD ["$HOME/.rbenv/versions/$RUBY_VERSION/bin/bundle", "exec", "$HOME/.rbenv/versions/$RUBY_VERSION/bin/puma", "-C", "config/puma.rb"]
+CMD ["/data/docker/compose/ruby-puma/run.sh"]

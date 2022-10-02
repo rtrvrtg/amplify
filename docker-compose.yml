@@ -16,14 +16,16 @@ services:
     volumes:
       - ./:/data
 
-  # ruby-puma:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/compose/ruby-puma/Dockerfile
-  #   network_mode: service:nginx
-  #   volumes:
-  #     - ./:/data
-  #   environment: {}
+  ruby-puma:
+    build:
+      context: .
+      dockerfile: ./docker/compose/ruby-puma/Dockerfile
+    network_mode: service:nginx
+    volumes:
+      - ./:/data
+    environment:
+      DOCKERIZED: true
+      PROJECT_ID: nsw-state-library-amplify
 
   # CLI
 
@@ -34,7 +36,9 @@ services:
     network_mode: service:nginx
     volumes:
       - ./:/data
-    environment: {}
+    environment:
+      DOCKERIZED: true
+      PROJECT_ID: nsw-state-library-amplify
 
   # Databases
 
