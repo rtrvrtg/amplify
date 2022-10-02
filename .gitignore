@@ -54,6 +54,9 @@
 # Node
 /node_modules
 
+# Generated asset files
+/public/assets
+
 /public/collections/
 /public/collections_v2/
 
